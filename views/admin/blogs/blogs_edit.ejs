@@ -1,0 +1,127 @@
+<%- include("../layouts/header") %> <%- include("../layouts/sidebar") %>
+
+<div class="content-body">
+  <!-- row -->
+  <div class="container-fluid">
+    <div class="d-flex align-items-center mb-4">
+      <h4 class="fs-20 font-w600 mb-0 me-auto">Edit Blog</h4>
+    </div>
+
+    <% if (error && error.length > 0) { %>
+      <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <strong>Error!</strong> <%= error[0] %>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+    <% } %>
+
+    <div class="row">
+      <div class="col-xl-12">
+        <div class="card">
+          <div class="card-body">
+            <form action="/admin/blogs-update/<%= blog.id %>?_method=PUT" method="POST" enctype="multipart/form-data">
+              <div class="row">
+                <div class="col-xl-6 col-md-6 mb-4">
+                  <label class="form-label font-w600"
+                    >Blog Title <span class="text-danger scale5 ms-2">*</span></label
+                  >
+                  <input
+                    type="text"
+                    class="form-control solid"
+                    placeholder="Enter blog title"
+                    name="title"
+                    value="<%= blog.title %>"
+                    required
+                  />
+                </div>
+                <div class="col-xl-6 col-md-6 mb-4">
+                  <label class="form-label font-w600"
+                    >Blog Image <span class="text-danger scale5 ms-2"></span></label
+                  >
+                  <div class="mb-3">
+                    <% if (blog.blog_image) { %>
+                      <div class="mb-2">
+                        <small class="text-muted">Current Image:</small><br>
+                        <img src="/uploads/<%= blog.blog_image %>" alt="<%= blog.title %>" style="max-width: 150px; height: auto; border-radius: 4px;">
+                      </div>
+                    <% } %>
+                  </div>
+                  <input
+                    type="file"
+                    class="form-control solid"
+                    name="blog_image"
+                    accept="image/*"
+                  />
+                  <small class="form-text text-muted">Leave empty to keep current image. Accepted formats: JPG, PNG, GIF (Max 2MB)</small>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-xl-12 col-md-12 mb-4">
+                  <label class="form-label font-w600"
+                    >Description <span class="text-danger scale5 ms-2">*</span></label
+                  >
+                  <textarea
+                    class="form-control solid"
+                    placeholder="Enter short description"
+                    name="description"
+                    rows="2"
+                    required
+                  ><%= blog.description %></textarea>
+                  <small class="form-text text-muted">Brief summary of the blog (appears in lists)</small>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-xl-12 col-md-12 mb-4">
+                  <label class="form-label font-w600"
+                    >Blog Content <span class="text-danger scale5 ms-2">*</span></label
+                  >
+                  <textarea
+                    class="form-control solid"
+                    placeholder="Enter full blog content"
+                    name="content"
+                    rows="6"
+                    required
+                  ><%= blog.content %></textarea>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-xl-12 col-md-12 mb-4">
+                  <label class="form-label font-w600">Status</label>
+                  <div>
+                    <label class="radio-inline mx-3">
+                      <input type="radio" name="status" value="active" <% if (blog.status === 'active') { %>checked<% } %> /> Active
+                    </label>
+                    <label class="radio-inline">
+                      <input type="radio" name="status" value="inactive" <% if (blog.status === 'inactive') { %>checked<% } %> /> Inactive
+                    </label>
+                  </div>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-xl-12">
+                  <small class="text-muted">
+                    <strong>Created:</strong> <%= new Date(blog.createdAt).toLocaleString() %> |
+                    <strong>Last Updated:</strong> <%= new Date(blog.updatedAt).toLocaleString() %>
+                  </small>
+                </div>
+              </div>
+            </form>
+          </div>
+          <div class="card-footer text-end">
+            <div>
+              <a href="/admin/blogs" class="btn btn-secondary me-2">Cancel</a>
+              <button type="submit" class="btn btn-primary" onclick="document.querySelector('form').submit()">
+                <i class="fas fa-save me-2"></i>Update Blog
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<%-include("../layouts/footer") %>

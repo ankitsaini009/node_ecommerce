@@ -1,0 +1,137 @@
+<%- include("../layouts/header") %> <%- include("../layouts/sidebar") %>
+
+<div class="content-body">
+  <!-- row -->
+  <div class="container-fluid">
+    <div class="d-flex align-items-center mb-4">
+      <h4 class="fs-20 font-w600 mb-0 me-auto">Create New Blog</h4>
+    </div>
+
+    <% if (error && error.length > 0) { %>
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+      <strong>Error!</strong> <%= error[0] %>
+      <button
+        type="button"
+        class="btn-close"
+        data-bs-dismiss="alert"
+        aria-label="Close"
+      ></button>
+    </div>
+    <% } %>
+
+    <div class="row">
+      <div class="col-xl-12">
+        <div class="card">
+          <div class="card-body">
+            <form
+              action="/admin/blogs-add"
+              method="POST"
+              enctype="multipart/form-data"
+            >
+              <div class="row">
+                <div class="col-xl-6 col-md-6 mb-4">
+                  <label class="form-label font-w600"
+                    >Blog Title
+                    <span class="text-danger scale5 ms-2">*</span></label
+                  >
+                  <input
+                    type="text"
+                    class="form-control solid"
+                    placeholder="Enter blog title"
+                    name="title"
+                    required
+                  />
+                </div>
+                <div class="col-xl-6 col-md-6 mb-4">
+                  <label class="form-label font-w600"
+                    >Blog Image
+                    <span class="text-danger scale5 ms-2">*</span></label
+                  >
+                  <input
+                    type="file"
+                    class="form-control solid"
+                    name="blog_image"
+                    accept="image/*"
+                  />
+                  <small class="form-text text-muted"
+                    >Accepted formats: JPG, PNG, GIF (Max 2MB)</small
+                  >
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-xl-12 col-md-12 mb-4">
+                  <label class="form-label font-w600"
+                    >Description
+                    <span class="text-danger scale5 ms-2">*</span></label
+                  >
+                  <textarea
+                    class="form-control solid"
+                    placeholder="Enter short description"
+                    name="description"
+                    rows="2"
+                    required
+                  ></textarea>
+                  <small class="form-text text-muted"
+                    >Brief summary of the blog (appears in lists)</small
+                  >
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-xl-12 col-md-12 mb-4">
+                  <label class="form-label font-w600"
+                    >Blog Content
+                    <span class="text-danger scale5 ms-2">*</span></label
+                  >
+                  <textarea
+                    class="form-control solid"
+                    placeholder="Enter full blog content"
+                    name="content"
+                    rows="6"
+                    required
+                  ></textarea>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-xl-12 col-md-12 mb-4">
+                  <label class="form-label font-w600">Status</label>
+                  <div>
+                    <label class="radio-inline mx-3">
+                      <input
+                        type="radio"
+                        name="status"
+                        value="active"
+                        checked
+                      />
+                      Active
+                    </label>
+                    <label class="radio-inline">
+                      <input type="radio" name="status" value="inactive" />
+                      Inactive
+                    </label>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+          <div class="card-footer text-end">
+            <div>
+              <a href="/admin/blogs" class="btn btn-secondary me-2">Cancel</a>
+              <button type="submit" form="blogForm" class="btn btn-primary">
+                <i class="fas fa-save me-2"></i>Create Blog
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.querySelector("form").id = "blogForm";
+</script>
+
+<%-include("../layouts/footer") %>

@@ -16,6 +16,8 @@ router.post("/loginsubmit", adminController.login);
 router.get("/dashboard", auth, adminController.dashboard);
 
 router.get("/blogs", auth, BlogsController.blogs);
+router.get("/blogs-add", auth, BlogsController.blogs_add);
+router.post("/blogs-add", auth, upload.single("blog_image"), BlogsController.blogs_add_submit);
 
 router.get("/admin-profile", auth, adminController.admin_profile);
 router.get("/logout", auth, adminController.logout);
