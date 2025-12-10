@@ -3,6 +3,7 @@ const router = express.Router();
 const bcrypt = require("bcrypt");
 const User = require("../models/User");
 const adminController = require("../controllers/adminController");
+const BlogsController = require("../controllers/BlogsController");
 const auth = require("../middleware/auth");
 const upload = require("../middleware/upload");
 
@@ -13,7 +14,8 @@ router.post("/loginsubmit", adminController.login);
 
 // Dashboard (protected route)
 router.get("/dashboard", auth, adminController.dashboard);
-router.get("/blogs", auth, adminController.blogs);
+
+router.get("/blogs", auth, BlogsController.blogs);
 
 router.get("/admin-profile", auth, adminController.admin_profile);
 router.get("/logout", auth, adminController.logout);

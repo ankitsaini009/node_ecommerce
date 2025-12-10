@@ -103,7 +103,4 @@ module.exports = {
       res.send("Error updating profile");
     }
   },
-  blogs: (req, res) => {
-    res.render("admin/blogs");
-  },
 };
