@@ -103,4 +103,20 @@ module.exports = {
       res.send("Error updating profile");
     }
   },
+
+  site_setting: async (req, res) => {
+    try {
+      // Fetch current site settings from database or config file
+      const siteSettings = {
+        siteName: "My E-commerce Site",
+        siteDescription: "Best products online",
+        // Add other settings as needed
+      };
+      res.render("admin/site-setting", { siteSettings, message: req.flash("success") });
+    } catch (err) {
+      console.log(err);
+      res.send("Error loading site settings");
+    }
+  },
+
 };

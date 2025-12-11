@@ -12,11 +12,6 @@ const Blog = sequelize.define("Blog", {
     allowNull: true,
   },
 
-  description: {
-    type: DataTypes.TEXT,
-    allowNull: false,
-  },
-
   content: {
     type: DataTypes.TEXT,
     allowNull: true,
