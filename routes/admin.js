@@ -25,6 +25,7 @@ router.get("/blogs-delete/:id", auth, BlogsController.blogs_delete);
 
 // Site Setting Routes
 router.get("/site-setting", auth, adminController.site_setting);
+router.post("/site-setting", auth, upload.single("site_logo"), adminController.site_setting_update);
 
 router.get("/admin-profile", auth, adminController.admin_profile);
 router.get("/logout", auth, adminController.logout);

@@ -5,6 +5,7 @@ const flash = require("connect-flash");
 const methodOverride = require("method-override");
 const sequelize = require("./config/db");
 const User = require("./models/User");
+const SiteSetting = require("./models/SiteSetting");
 const globalMW = require("./middleware/globally");
 const NamedRouter = require("named-routes");
 const namedRouter = new NamedRouter();

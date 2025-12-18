@@ -1,7 +1,9 @@
 const User = require("../models/User");
+const siteSettings = require("../models/SiteSetting");
 const bcrypt = require("bcrypt");
 const session = require("express-session");
 const flash = require("connect-flash");
+const { where } = require("sequelize");
 
 module.exports = {
   // Render Login Page
@@ -107,16 +109,80 @@ module.exports = {
   site_setting: async (req, res) => {
     try {
       // Fetch current site settings from database or config file
-      const siteSettings = {
-        siteName: "My E-commerce Site",
-        siteDescription: "Best products online",
-        // Add other settings as needed
-      };
-      res.render("admin/site-setting", { siteSettings, message: req.flash("success") });
+      const siteSettingdata = await siteSettings.findOne({ where: { id: 1 } });
+
+      res.render("admin/site-setting", { siteSettingdata, message: req.flash("success") });
     } catch (err) {
       console.log(err);
       res.send("Error loading site settings");
     }
   },
+
+  site_setting_update: async (req, res) => {
+    try {
+      const {
+        site_name,
+        site_email,
+        site_phone,
+        site_address,
+        facebook,
+        instagram,
+        twitter,
+        youtube,
+        meta_description,
+        status
+      } = req.body;
+
+      // logo (multer)
+      let site_logo = null;
+      if (req.file) {
+        site_logo = req.file.filename;
+      }
+
+      // find existing setting (single row)
+      let setting = await SiteSetting.findOne();
+
+      if (!setting) {
+        // FIRST TIME CREATE
+        await SiteSetting.create({
+          site_name,
+          site_email,
+          site_phone,
+          site_address,
+          facebook,
+          instagram,
+          twitter,
+          youtube,
+          meta_description,
+          status,
+          site_logo
+        });
+      } else {
+        // UPDATE
+        await setting.update({
+          site_name,
+          site_email,
+          site_phone,
+          site_address,
+          facebook,
+          instagram,
+          twitter,
+          youtube,
+          meta_description,
+          status,
+          ...(site_logo && { site_logo }) // update logo only if uploaded
+        });
+      }
+
+      req.flash("success", "Site settings updated successfully");
+      res.redirect("/admin/site-setting");
+
+    } catch (err) {
+      console.error(err);
+      req.flash("error", "Something went wrong while updating site settings");
+      res.redirect("/admin/site-setting");
+    }
+  }
+
 
 };

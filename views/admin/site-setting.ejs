@@ -1,0 +1,116 @@
+<%- include("layouts/header") %>
+<%- include("layouts/sidebar") %>
+
+<div class="content-body">
+  <div class="container-fluid">
+    <div class="d-flex align-items-center mb-4">
+      <h4 class="fs-20 font-w600 mb-0 me-auto">Site Settings</h4>
+    </div>
+
+    <% if (success && success.length > 0) { %>
+      <div class="alert alert-success alert-dismissible fade show">
+        <strong>Success!</strong> <%= success[0] %>
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+      </div>
+    <% } %>
+
+    <% if (error && error.length > 0) { %>
+      <div class="alert alert-danger alert-dismissible fade show">
+        <strong>Error!</strong> <%= error[0] %>
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+      </div>
+    <% } %>
+
+    <div class="row">
+      <div class="col-xl-12">
+        <div class="card">
+          <div class="card-body">
+            <form id="siteSettingForm" action="/admin/site-setting/" method="POST" enctype="multipart/form-data">
+
+              <!-- Site Basic Info -->
+              <div class="row">
+                <div class="col-md-6 mb-4">
+                  <label class="form-label font-w600">Site Name *</label>
+                  <input type="text" name="site_name" class="form-control solid" placeholder="Enter site name" required>
+                </div>
+
+                <div class="col-md-6 mb-4">
+                  <label class="form-label font-w600">Site Logo</label>
+                  <input type="file" name="site_logo" class="form-control solid" accept="image/*">
+                  <small class="text-muted">PNG, JPG (Max 2MB)</small>
+                </div>
+              </div>
+
+              <!-- Contact Info -->
+              <div class="row">
+                <div class="col-md-6 mb-4">
+                  <label class="form-label font-w600">Contact Email *</label>
+                  <input type="email" name="site_email" class="form-control solid" placeholder="admin@example.com" required>
+                </div>
+
+                <div class="col-md-6 mb-4">
+                  <label class="form-label font-w600">Contact Phone</label>
+                  <input type="text" name="site_phone" class="form-control solid" placeholder="+91 9876543210">
+                </div>
+              </div>
+
+              <!-- Address -->
+              <div class="row">
+                <div class="col-md-12 mb-4">
+                  <label class="form-label font-w600">Site Description</label>
+                  <textarea name="site_description" rows="3" class="form-control solid"
+                    placeholder="Company description"></textarea>
+                </div>
+              </div>
+
+              <!-- Social Links -->
+              <div class="row">
+                <div class="col-md-6 mb-4">
+                  <label class="form-label font-w600">Facebook URL</label>
+                  <input type="url" name="facebook" class="form-control solid">
+                </div>
+
+                <div class="col-md-6 mb-4">
+                  <label class="form-label font-w600">Instagram URL</label>
+                  <input type="url" name="instagram" class="form-control solid">
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-6 mb-4">
+                  <label class="form-label font-w600">Twitter (X) URL</label>
+                  <input type="url" name="twitter" class="form-control solid">
+                </div>
+
+                <div class="col-md-6 mb-4">
+                  <label class="form-label font-w600">YouTube URL</label>
+                  <input type="url" name="youtube" class="form-control solid">
+                </div>
+              </div>
+
+              <!-- SEO -->
+              <div class="row">
+                <div class="col-md-12 mb-4">
+                  <label class="form-label font-w600">Meta Description</label>
+                  <textarea name="meta_description" rows="3" class="form-control solid"
+                    placeholder="SEO meta description"></textarea>
+                </div>
+              </div>
+
+            </form>
+          </div>
+
+          <div class="card-footer text-end">
+            <a href="/admin/dashboard" class="btn btn-secondary me-2">Cancel</a>
+            <button type="submit" form="siteSettingForm" class="btn btn-primary">
+              <i class="fas fa-save me-2"></i>Save Settings
+            </button>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<%- include("layouts/footer") %>
