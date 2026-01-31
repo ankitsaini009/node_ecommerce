@@ -1,5 +1,5 @@
 const User = require("../models/User");
-const siteSettings = require("../models/SiteSetting");
+const SiteSetting = require("../models/SiteSetting");
 const bcrypt = require("bcrypt");
 const session = require("express-session");
 const flash = require("connect-flash");
@@ -109,7 +109,7 @@ module.exports = {
   site_setting: async (req, res) => {
     try {
       // Fetch current site settings from database or config file
-      const siteSettingdata = await siteSettings.findOne({ where: { id: 1 } });
+      const siteSettingdata = await SiteSetting.findOne({ where: { id: 1 } });
 
       res.render("admin/site-setting", { siteSettingdata, message: req.flash("success") });
     } catch (err) {

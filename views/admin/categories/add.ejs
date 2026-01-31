@@ -1,0 +1,100 @@
+<%- include("../layouts/header") %>
+<%- include("../layouts/sidebar") %>
+
+<div class="content-body">
+  <div class="container-fluid">
+    <div class="d-flex align-items-center mb-4">
+      <h4 class="fs-20 font-w600 mb-0 me-auto">Add Category</h4>
+      <a href="/admin/categories" class="btn btn-secondary btn-sm">
+        <i class="fas fa-arrow-left me-2"></i>Back to Categories
+      </a>
+    </div>
+
+    <% if (message && message.length > 0) { %>
+      <div class="alert alert-success alert-dismissible fade show">
+        <strong>Success!</strong> <%= message[0] %>
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+      </div>
+    <% } %>
+
+    <% if (error && error.length > 0) { %>
+      <div class="alert alert-danger alert-dismissible fade show">
+        <strong>Error!</strong> <%= error[0] %>
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+      </div>
+    <% } %>
+
+    <div class="row">
+      <div class="col-xl-12">
+        <div class="card">
+          <div class="card-body">
+            <form id="categoryForm" action="/admin/categories-add" method="POST" enctype="multipart/form-data">
+              
+              <div class="row">
+                <div class="col-md-6 mb-4">
+                  <label class="form-label font-w600">Category Name *</label>
+                  <input type="text" name="name" class="form-control solid" placeholder="Enter category name" required>
+                </div>
+
+                <div class="col-md-6 mb-4">
+                  <label class="form-label font-w600">Slug</label>
+                  <input type="text" name="slug" class="form-control solid" placeholder="auto-generated-slug">
+                  <small class="text-muted">Leave blank for auto-generation</small>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-6 mb-4">
+                  <label class="form-label font-w600">Category Image</label>
+                  <input type="file" name="image" class="form-control solid" accept="image/*">
+                </div>
+
+                <div class="col-md-6 mb-4">
+                  <label class="form-label font-w600">Status *</label>
+                  <select name="status" class="form-control solid" required>
+                    <option value="active" selected>Active</option>
+                    <option value="inactive">Inactive</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-12 mb-4">
+                  <label class="form-label font-w600">Description</label>
+                  <textarea name="description" rows="4" class="form-control solid" placeholder="Category description"></textarea>
+                </div>
+              </div>
+
+              <h5 class="mb-3">SEO Information</h5>
+              
+              <div class="row">
+                <div class="col-md-12 mb-4">
+                  <label class="form-label font-w600">Meta Title</label>
+                  <input type="text" name="meta_title" class="form-control solid" placeholder="SEO meta title">
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-12 mb-4">
+                  <label class="form-label font-w600">Meta Description</label>
+                  <textarea name="meta_description" rows="3" class="form-control solid" placeholder="SEO meta description"></textarea>
+                </div>
+              </div>
+
+            </form>
+          </div>
+
+          <div class="card-footer text-end">
+            <a href="/admin/categories" class="btn btn-secondary me-2">Cancel</a>
+            <button type="submit" form="categoryForm" class="btn btn-primary">
+              <i class="fas fa-save me-2"></i>Save Category
+            </button>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<%- include("../layouts/footer") %>
