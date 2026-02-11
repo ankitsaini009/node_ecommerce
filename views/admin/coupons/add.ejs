@@ -1,0 +1,121 @@
+<%- include("../layouts/header") %>
+<%- include("../layouts/sidebar") %>
+
+<div class="content-body">
+  <div class="container-fluid">
+    <div class="d-flex align-items-center mb-4">
+      <h4 class="fs-20 font-w600 mb-0 me-auto">Add Coupon</h4>
+      <a href="/admin/coupons" class="btn btn-secondary btn-sm">
+        <i class="fas fa-arrow-left me-2"></i>Back to Coupons
+      </a>
+    </div>
+
+    <% if (error && error.length > 0) { %>
+      <div class="alert alert-danger alert-dismissible fade show">
+        <strong>Error!</strong> <%= error[0] %>
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+      </div>
+    <% } %>
+
+    <div class="row">
+      <div class="col-xl-12">
+        <div class="card">
+          <div class="card-body">
+            <form id="couponForm" action="/admin/coupons-add" method="POST">
+              
+              <div class="row">
+                <div class="col-md-6 mb-4">
+                  <label class="form-label font-w600">Coupon Code *</label>
+                  <input type="text" name="code" class="form-control solid" placeholder="SUMMER2024" required style="text-transform: uppercase;">
+                </div>
+
+                <div class="col-md-6 mb-4">
+                  <label class="form-label font-w600">Status *</label>
+                  <select name="status" class="form-control solid" required>
+                    <option value="active" selected>Active</option>
+                    <option value="inactive">Inactive</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-12 mb-4">
+                  <label class="form-label font-w600">Description</label>
+                  <textarea name="description" rows="3" class="form-control solid" placeholder="Coupon description"></textarea>
+                </div>
+              </div>
+
+              <h5 class="mb-3">Discount Details</h5>
+
+              <div class="row">
+                <div class="col-md-6 mb-4">
+                  <label class="form-label font-w600">Discount Type *</label>
+                  <select name="discount_type" class="form-control solid" required>
+                    <option value="fixed">Fixed Amount ($)</option>
+                    <option value="percent">Percentage (%)</option>
+                  </select>
+                </div>
+
+                <div class="col-md-6 mb-4">
+                  <label class="form-label font-w600">Discount Value *</label>
+                  <input type="number" name="discount_value" class="form-control solid" step="0.01" placeholder="0.00" required>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-6 mb-4">
+                  <label class="form-label font-w600">Minimum Purchase Amount</label>
+                  <input type="number" name="min_purchase" class="form-control solid" step="0.01" placeholder="0.00">
+                </div>
+
+                <div class="col-md-6 mb-4">
+                  <label class="form-label font-w600">Maximum Discount Amount</label>
+                  <input type="number" name="max_discount" class="form-control solid" step="0.01" placeholder="Leave blank for no limit">
+                </div>
+              </div>
+
+              <h5 class="mb-3">Usage Limits</h5>
+
+              <div class="row">
+                <div class="col-md-6 mb-4">
+                  <label class="form-label font-w600">Total Usage Limit</label>
+                  <input type="number" name="usage_limit" class="form-control solid" placeholder="Leave blank for unlimited">
+                </div>
+
+                <div class="col-md-6 mb-4">
+                  <label class="form-label font-w600">Per User Limit</label>
+                  <input type="number" name="per_user_limit" class="form-control solid" value="1">
+                </div>
+              </div>
+
+              <h5 class="mb-3">Validity Period</h5>
+
+              <div class="row">
+                <div class="col-md-6 mb-4">
+                  <label class="form-label font-w600">Valid From *</label>
+                  <input type="datetime-local" name="valid_from" class="form-control solid" required>
+                </div>
+
+                <div class="col-md-6 mb-4">
+                  <label class="form-label font-w600">Valid Till *</label>
+                  <input type="datetime-local" name="valid_to" class="form-control solid" required>
+                </div>
+              </div>
+
+            </form>
+          </div>
+
+          <div class="card-footer text-end">
+            <a href="/admin/coupons" class="btn btn-secondary me-2">Cancel</a>
+            <button type="submit" form="couponForm" class="btn btn-primary">
+              <i class="fas fa-save me-2"></i>Save Coupon
+            </button>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<%- include("../layouts/footer") %>

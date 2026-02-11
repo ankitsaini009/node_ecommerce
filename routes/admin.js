@@ -6,6 +6,9 @@ const adminController = require("../controllers/adminController");
 const BlogsController = require("../controllers/BlogsController");
 const CategoryController = require("../controllers/CategoryController");
 const SubCategoryController = require("../controllers/SubCategoryController");
+const ProductController = require("../controllers/ProductController");
+const CouponController = require("../controllers/CouponController");
+const BannerController = require("../controllers/BannerController");
 const auth = require("../middleware/auth");
 const upload = require("../middleware/upload");
 
@@ -44,6 +47,43 @@ router.post("/subcategories-add", auth, upload.single("image"), SubCategoryContr
 router.get("/subcategories-edit/:id", auth, SubCategoryController.subcategory_edit);
 router.post("/subcategories-edit/:id", auth, upload.single("image"), SubCategoryController.subcategory_edit_submit);
 router.get("/subcategories-delete/:id", auth, SubCategoryController.subcategory_delete);
+
+// Product Routes
+router.get("/products", auth, ProductController.products);
+router.get("/products-add", auth, ProductController.product_add);
+router.post("/products-add", auth, upload.single("image"), ProductController.product_add_submit);
+router.get("/products-edit/:id", auth, ProductController.product_edit);
+router.post("/products-edit/:id", auth, upload.single("image"), ProductController.product_edit_submit);
+router.get("/products-delete/:id", auth, ProductController.product_delete);
+router.get("/get-subcategories/:category_id", auth, ProductController.get_subcategories);
+
+// Product Variants Routes
+router.get("/my-variants/:id", auth, ProductController.products_variants);
+
+router.post("/add-variant", auth, upload.single("image"), ProductController.add_variant);
+router.post("/edit-variant", auth, upload.single("image"), ProductController.edit_variant);
+router.get("/delete-variant/:variant_id", auth, ProductController.delete_variant);
+
+// Product Gallery Routes
+router.post("/add-gallery", auth, upload.single("image"), ProductController.add_gallery);
+router.get("/delete-gallery/:gallery_id", auth, ProductController.delete_gallery);
+
+
+// Coupon Routes
+router.get("/coupons", auth, CouponController.coupons);
+router.get("/coupons-add", auth, CouponController.coupon_add);
+router.post("/coupons-add", auth, CouponController.coupon_add_submit);
+router.get("/coupons-edit/:id", auth, CouponController.coupon_edit);
+router.post("/coupons-edit/:id", auth, CouponController.coupon_edit_submit);
+router.get("/coupons-delete/:id", auth, CouponController.coupon_delete);
+
+// Banner Routes
+router.get("/banners", auth, BannerController.banners);
+router.get("/banners-add", auth, BannerController.banner_add);
+router.post("/banners-add", auth, upload.single("image"), BannerController.banner_add_submit);
+router.get("/banners-edit/:id", auth, BannerController.banner_edit);
+router.post("/banners-edit/:id", auth, upload.single("image"), BannerController.banner_edit_submit);
+router.get("/banners-delete/:id", auth, BannerController.banner_delete);
 
 router.get("/admin-profile", auth, adminController.admin_profile);
 router.get("/logout", auth, adminController.logout);

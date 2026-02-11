@@ -1,0 +1,116 @@
+<%- include("../layouts/header") %>
+<%- include("../layouts/sidebar") %>
+
+<div class="content-body">
+  <div class="container-fluid">
+    <div class="d-flex align-items-center mb-4">
+      <h4 class="fs-20 font-w600 mb-0 me-auto">Add Banner</h4>
+      <a href="/admin/banners" class="btn btn-secondary btn-sm">
+        <i class="fas fa-arrow-left me-2"></i>Back to Banners
+      </a>
+    </div>
+
+    <% if (error && error.length > 0) { %>
+      <div class="alert alert-danger alert-dismissible fade show">
+        <strong>Error!</strong> <%= error[0] %>
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+      </div>
+    <% } %>
+
+    <div class="row">
+      <div class="col-xl-12">
+        <div class="card">
+          <div class="card-body">
+            <form id="bannerForm" action="/admin/banners-add" method="POST" enctype="multipart/form-data">
+              
+              <div class="row">
+                <div class="col-md-6 mb-4">
+                  <label class="form-label font-w600">Banner Title *</label>
+                  <input type="text" name="title" class="form-control solid" placeholder="Enter banner title" required>
+                </div>
+
+                <div class="col-md-6 mb-4">
+                  <label class="form-label font-w600">Banner Type *</label>
+                  <select name="type" class="form-control solid" required>
+                    <option value="home">Home</option>
+                    <option value="category">Category</option>
+                    <option value="product">Product</option>
+                    <option value="sale">Sale</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-6 mb-4">
+                  <label class="form-label font-w600">Position</label>
+                  <input type="number" name="position" class="form-control solid" placeholder="0" value="0">
+                  <small class="text-muted">Order in which banners will display</small>
+                </div>
+
+                <div class="col-md-6 mb-4">
+                  <label class="form-label font-w600">Status *</label>
+                  <select name="status" class="form-control solid" required>
+                    <option value="active" selected>Active</option>
+                    <option value="inactive">Inactive</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-12 mb-4">
+                  <label class="form-label font-w600">Description</label>
+                  <textarea name="description" rows="3" class="form-control solid" placeholder="Banner description"></textarea>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-6 mb-4">
+                  <label class="form-label font-w600">Banner Image *</label>
+                  <input type="file" name="image" class="form-control solid" accept="image/*" required>
+                  <small class="text-muted">Recommended: 1200x400px</small>
+                </div>
+
+                <div class="col-md-6 mb-4">
+                  <label class="form-label font-w600">Button Text</label>
+                  <input type="text" name="button_text" class="form-control solid" placeholder="Shop Now">
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-12 mb-4">
+                  <label class="form-label font-w600">Banner Link</label>
+                  <input type="url" name="link" class="form-control solid" placeholder="https://example.com">
+                </div>
+              </div>
+
+              <h5 class="mb-3">Display Period</h5>
+
+              <div class="row">
+                <div class="col-md-6 mb-4">
+                  <label class="form-label font-w600">Start Date</label>
+                  <input type="datetime-local" name="start_date" class="form-control solid">
+                </div>
+
+                <div class="col-md-6 mb-4">
+                  <label class="form-label font-w600">End Date</label>
+                  <input type="datetime-local" name="end_date" class="form-control solid">
+                </div>
+              </div>
+
+            </form>
+          </div>
+
+          <div class="card-footer text-end">
+            <a href="/admin/banners" class="btn btn-secondary me-2">Cancel</a>
+            <button type="submit" form="bannerForm" class="btn btn-primary">
+              <i class="fas fa-save me-2"></i>Save Banner
+            </button>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<%- include("../layouts/footer") %>
