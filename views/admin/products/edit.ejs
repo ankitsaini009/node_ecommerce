@@ -25,7 +25,11 @@
               
               <!-- Basic Info -->
               <h5 class="mb-3">Basic Information</h5>
-              
+               <button type="button" id="generateDescBtn" class="btn btn-primary btn-sm mt-2 generateDescBtn">
+                <i class="fas fa-magic me-2"></i>
+                Generate product data with AI
+              </button>
+
               <div class="row">
                 <div class="col-md-6 mb-4">
                   <label class="form-label font-w600">Product Name *</label>
@@ -51,7 +55,6 @@
                   <textarea name="description" rows="4" class="form-control solid"><%= product.description || '' %></textarea>
                 </div>
               </div>
-
               <!-- Category Info -->
               <h5 class="mb-3">Category Information</h5>
               

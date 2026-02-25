@@ -225,7 +225,7 @@ module.exports = {
       });
 
       req.flash("success", "Variant added successfully");
-      res.redirect("/admin/products-edit/" + product_id);
+      res.redirect("/admin/my-variants/" + product_id);
     } catch (err) {
       console.error(err);
       req.flash("error", "Error adding variant");
@@ -265,7 +265,7 @@ module.exports = {
       await variant.update(updateData);
 
       req.flash("success", "Variant updated successfully");
-      res.redirect("/admin/products-edit/" + variant.product_id);
+      res.redirect("/admin/my-variants/" + variant.product_id);
     } catch (err) {
       console.error(err);
       req.flash("error", "Error updating variant");
@@ -287,7 +287,7 @@ module.exports = {
       await variant.destroy();
 
       req.flash("success", "Variant deleted successfully");
-      res.redirect("/admin/products-edit/" + productId);
+      res.redirect("/admin/my-variants/" + productId);
     } catch (err) {
       console.error(err);
       req.flash("error", "Error deleting variant");
@@ -313,7 +313,7 @@ module.exports = {
       });
 
       req.flash("success", "Gallery image added successfully");
-      res.redirect("/admin/products-edit/" + product_id);
+      res.redirect("/admin/my-variants/" + product_id);
     } catch (err) {
       console.error(err);
       req.flash("error", "Error adding gallery image");
@@ -335,7 +335,7 @@ module.exports = {
       await gallery.destroy();
 
       req.flash("success", "Gallery image deleted successfully");
-      res.redirect("/admin/products-edit/" + productId);
+      res.redirect("/admin/my-variants/" + productId);
     } catch (err) {
       console.error(err);
       req.flash("error", "Error deleting gallery image");

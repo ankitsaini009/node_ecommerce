@@ -23,7 +23,7 @@ app.use(
     secret: "cmssecret",
     resave: false,
     saveUninitialized: false,
-  })
+  }),
 );
 app.use(flash());
 app.use(globalMW); // 👈 NOW globally available
@@ -51,9 +51,11 @@ app.use((req, res, next) => {
 // Routes
 const adminRoutes = require("./routes/admin");
 const frontendRoutes = require("./routes/frontend");
+const aiRoutes = require("./routes/api/ai");
 
 app.use("/admin", adminRoutes);
 app.use("/", frontendRoutes);
+app.use("/api/ai", aiRoutes);
 
 namedRouter.extendExpress(app);
 namedRouter.registerAppHelpers(app);
@@ -61,5 +63,5 @@ namedRouter.registerAppHelpers(app);
 // Server Start
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () =>
-  console.log(`Server running on http://localhost:${PORT}`)
+  console.log(`Server running on http://localhost:${PORT}`),
 );
