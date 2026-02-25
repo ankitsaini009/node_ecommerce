@@ -1,0 +1,360 @@
+<%- include("../layouts/header") %>
+<%- include("../layouts/sidebar") %>
+
+<div class="content-body">
+  <div class="container-fluid">
+    <div class="d-flex align-items-center mb-4">
+      <h4 class="fs-20 font-w600 mb-0 me-auto">Edit Product - Variants & Gallery</h4>
+      <a href="/admin/products" class="btn btn-secondary btn-sm">
+        <i class="fas fa-arrow-left me-2"></i>Back to Products
+      </a>
+    </div>
+
+    <% if (message && message.length > 0) { %>
+      <div class="alert alert-success alert-dismissible fade show">
+        <strong>Success!</strong> <%= message[0] %>
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+      </div>
+    <% } %>
+
+    <% if (error && error.length > 0) { %>
+      <div class="alert alert-danger alert-dismissible fade show">
+        <strong>Error!</strong> <%= error[0] %>
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+      </div>
+    <% } %>
+
+    <!-- Product Gallery -->
+    <div class="row mb-4">
+      <div class="col-xl-12">
+        <div class="card">
+          <div class="card-header d-flex justify-content-between align-items-center">
+            <h5 class="mb-0">Product Gallery</h5>
+            <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#galleryModal">
+              <i class="fas fa-plus me-2"></i>Add Image
+            </button>
+          </div>
+          <div class="card-body">
+            <div class="row">
+              <% if (product.galleries && product.galleries.length > 0) { %>
+                <% product.galleries.forEach((gallery, index) => { %>
+                  <div class="col-md-3 mb-3">
+                    <div class="card">
+                      <img src="/uploads/<%= gallery.image %>" class="card-img-top" style="height: 200px; object-fit: cover;" alt="<%= gallery.alt_text %>">
+                      <div class="card-body p-2">
+                        <small><strong><%= gallery.alt_text || 'No alt text' %></strong></small>
+                        <div class="mt-2">
+                          <a href="/admin/delete-gallery/<%= gallery.id %>" class="btn btn-danger btn-sm btn-block" onclick="return confirm('Delete this image?')">
+                            <i class="fas fa-trash"></i> Delete
+                          </a>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                <% }) %>
+              <% } else { %>
+                <div class="col-12 text-center py-5">
+                  <p class="text-muted">No gallery images added yet</p>
+                </div>
+              <% } %>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Product Variants -->
+    <div class="row">
+      <div class="col-xl-12">
+        <div class="card">
+          <div class="card-header d-flex justify-content-between align-items-center">
+            <h5 class="mb-0">Product Variants (Colors, Sizes, etc.)</h5>
+            <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#variantModal">
+              <i class="fas fa-plus me-2"></i>Add Variant
+            </button>
+          </div>
+          <div class="card-body p-0">
+            <div class="table-responsive">
+              <table class="table table-hover mb-0">
+                <thead>
+                  <tr>
+                    <th>Variant Name</th>
+                    <th>Size</th>
+                    <th>Color</th>
+                    <th>SKU</th>
+                    <th>Price</th>
+                    <th>Stock</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <% if (product.variants && product.variants.length > 0) { %>
+                    <% product.variants.forEach(variant => { %>
+                      <tr>
+                        <td><strong><%= variant.variant_name %></strong></td>
+                        <td><%= variant.size || '-' %></td>
+                        <td>
+                          <% if (variant.color) { %>
+                            <span class="badge" style="background-color: <%= variant.color_code || '#000' %>; color: #fff;">
+                              <%= variant.color %>
+                            </span>
+                          <% } else { %>
+                            -
+                          <% } %>
+                        </td>
+                        <td><%= variant.variant_sku || '-' %></td>
+                        <td><%= variant.variant_price ? '$' + parseFloat(variant.variant_price).toFixed(2) : 'Base' %></td>
+                        <td>
+                          <span class="badge <%= variant.variant_stock > 0 ? 'badge-success' : 'badge-danger' %>">
+                            <%= variant.variant_stock %>
+                          </span>
+                        </td>
+                        <td>
+                          <span class="badge <%= variant.status === 'active' ? 'badge-success' : 'badge-danger' %>">
+                            <%= variant.status %>
+                          </span>
+                        </td>
+                        <td>
+                          <a href="#" class="btn btn-primary btn-sm me-2" data-bs-toggle="modal" 
+                             data-bs-target="#editVariantModal" onclick="editVariant(<%= JSON.stringify(variant) %>)">
+                            <i class="fas fa-edit"></i>
+                          </a>
+                          <a href="/admin/delete-variant/<%= variant.id %>" class="btn btn-danger btn-sm" onclick="return confirm('Delete this variant?')">
+                            <i class="fas fa-trash"></i>
+                          </a>
+                        </td>
+                      </tr>
+                    <% }) %>
+                  <% } else { %>
+                    <tr>
+                      <td colspan="8" class="text-center py-4">
+                        <p class="mb-0">No variants added yet</p>
+                      </td>
+                    </tr>
+                  <% } %>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Add Variant Modal -->
+<div class="modal fade" id="variantModal" tabindex="-1" aria-labelledby="variantModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="variantModalLabel">Add Product Variant</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <form action="/admin/add-variant" method="POST" enctype="multipart/form-data">
+        <div class="modal-body">
+          <input type="hidden" name="product_id" value="<%= product.id %>">
+
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Variant Name *</label>
+              <input type="text" name="variant_name" class="form-control" placeholder="e.g., Red-M" required>
+            </div>
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Size</label>
+              <input type="text" name="size" class="form-control" placeholder="e.g., M, L, XL">
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Color</label>
+              <input type="text" name="color" class="form-control" placeholder="e.g., Red, Blue">
+            </div>
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Color Code (Hex)</label>
+              <input type="color" name="color_code" class="form-control">
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Variant SKU</label>
+              <input type="text" name="variant_sku" class="form-control" placeholder="Unique SKU">
+            </div>
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Variant Price</label>
+              <input type="number" name="variant_price" class="form-control" step="0.01" placeholder="Leave blank for base price">
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Variant Cost Price</label>
+              <input type="number" name="variant_cost_price" class="form-control" step="0.01">
+            </div>
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Stock *</label>
+              <input type="number" name="variant_stock" class="form-control" value="0" required>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-12 mb-3">
+              <label class="form-label">Variant Image</label>
+              <input type="file" name="image" class="form-control" accept="image/*">
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-12 mb-3">
+              <label class="form-label">Status *</label>
+              <select name="status" class="form-control" required>
+                <option value="active" selected>Active</option>
+                <option value="inactive">Inactive</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-primary">
+            <i class="fas fa-save me-2"></i>Save Variant
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- Add Gallery Modal -->
+<div class="modal fade" id="galleryModal" tabindex="-1" aria-labelledby="galleryModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="galleryModalLabel">Add Gallery Image</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <form action="/admin/add-gallery" method="POST" enctype="multipart/form-data">
+        <div class="modal-body">
+          <input type="hidden" name="product_id" value="<%= product.id %>">
+
+          <div class="mb-3">
+            <label class="form-label">Image *</label>
+            <input type="file" name="image" class="form-control" accept="image/*" required>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Alt Text</label>
+            <input type="text" name="alt_text" class="form-control" placeholder="Image description">
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Position</label>
+            <input type="number" name="position" class="form-control" value="0">
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-primary">
+            <i class="fas fa-save me-2"></i>Add Image
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- Edit Variant Modal -->
+<div class="modal fade" id="editVariantModal" tabindex="-1" aria-labelledby="editVariantModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="editVariantModalLabel">Edit Product Variant</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <form action="/admin/edit-variant" method="POST" enctype="multipart/form-data">
+        <div class="modal-body">
+          <input type="hidden" name="variant_id" id="variantId">
+
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Variant Name *</label>
+              <input type="text" name="variant_name" id="variantName" class="form-control" required>
+            </div>
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Size</label>
+              <input type="text" name="size" id="variantSize" class="form-control">
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Color</label>
+              <input type="text" name="color" id="variantColor" class="form-control">
+            </div>
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Color Code (Hex)</label>
+              <input type="color" name="color_code" id="variantColorCode" class="form-control">
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Variant SKU</label>
+              <input type="text" name="variant_sku" id="variantSku" class="form-control">
+            </div>
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Variant Price</label>
+              <input type="number" name="variant_price" id="variantPrice" class="form-control" step="0.01">
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Variant Cost Price</label>
+              <input type="number" name="variant_cost_price" id="variantCostPrice" class="form-control" step="0.01">
+            </div>
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Stock *</label>
+              <input type="number" name="variant_stock" id="variantStock" class="form-control" required>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-12 mb-3">
+              <label class="form-label">Status *</label>
+              <select name="status" id="variantStatus" class="form-control" required>
+                <option value="active">Active</option>
+                <option value="inactive">Inactive</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-primary">
+            <i class="fas fa-save me-2"></i>Update Variant
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script>
+function editVariant(variant) {
+  document.getElementById('variantId').value = variant.id;
+  document.getElementById('variantName').value = variant.variant_name;
+  document.getElementById('variantSize').value = variant.size || '';
+  document.getElementById('variantColor').value = variant.color || '';
+  document.getElementById('variantColorCode').value = variant.color_code || '#000000';
+  document.getElementById('variantSku').value = variant.variant_sku || '';
+  document.getElementById('variantPrice').value = variant.variant_price || '';
+  document.getElementById('variantCostPrice').value = variant.variant_cost_price || '';
+  document.getElementById('variantStock').value = variant.variant_stock;
+  document.getElementById('variantStatus').value = variant.status;
+}
+</script>
+
+<%- include("../layouts/footer") %>

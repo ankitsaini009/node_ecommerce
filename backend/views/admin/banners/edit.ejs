@@ -1,0 +1,122 @@
+<%- include("../layouts/header") %>
+<%- include("../layouts/sidebar") %>
+
+<div class="content-body">
+  <div class="container-fluid">
+    <div class="d-flex align-items-center mb-4">
+      <h4 class="fs-20 font-w600 mb-0 me-auto">Edit Banner</h4>
+      <a href="/admin/banners" class="btn btn-secondary btn-sm">
+        <i class="fas fa-arrow-left me-2"></i>Back to Banners
+      </a>
+    </div>
+
+    <% if (error && error.length > 0) { %>
+      <div class="alert alert-danger alert-dismissible fade show">
+        <strong>Error!</strong> <%= error[0] %>
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+      </div>
+    <% } %>
+
+    <div class="row">
+      <div class="col-xl-12">
+        <div class="card">
+          <div class="card-body">
+            <form id="bannerForm" action="/admin/banners-edit/<%= banner.id %>" method="POST" enctype="multipart/form-data">
+              
+              <div class="row">
+                <div class="col-md-6 mb-4">
+                  <label class="form-label font-w600">Banner Title *</label>
+                  <input type="text" name="title" class="form-control solid" value="<%= banner.title %>" required>
+                </div>
+
+                <div class="col-md-6 mb-4">
+                  <label class="form-label font-w600">Banner Type *</label>
+                  <select name="type" class="form-control solid" required>
+                    <option value="home" <%= banner.type === 'home' ? 'selected' : '' %>>Home</option>
+                    <option value="category" <%= banner.type === 'category' ? 'selected' : '' %>>Category</option>
+                    <option value="product" <%= banner.type === 'product' ? 'selected' : '' %>>Product</option>
+                    <option value="sale" <%= banner.type === 'sale' ? 'selected' : '' %>>Sale</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-6 mb-4">
+                  <label class="form-label font-w600">Position</label>
+                  <input type="number" name="position" class="form-control solid" value="<%= banner.position %>">
+                  <small class="text-muted">Order in which banners will display</small>
+                </div>
+
+                <div class="col-md-6 mb-4">
+                  <label class="form-label font-w600">Status *</label>
+                  <select name="status" class="form-control solid" required>
+                    <option value="active" <%= banner.status === 'active' ? 'selected' : '' %>>Active</option>
+                    <option value="inactive" <%= banner.status === 'inactive' ? 'selected' : '' %>>Inactive</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-12 mb-4">
+                  <label class="form-label font-w600">Description</label>
+                  <textarea name="description" rows="3" class="form-control solid"><%= banner.description || '' %></textarea>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-6 mb-4">
+                  <label class="form-label font-w600">Banner Image</label>
+                  <input type="file" name="image" class="form-control solid" accept="image/*">
+                  <% if (banner.image) { %>
+                    <div class="mt-2">
+                      <img src="/uploads/<%= banner.image %>" alt="<%= banner.title %>" style="max-height: 150px; max-width: 250px;">
+                    </div>
+                  <% } %>
+                </div>
+
+                <div class="col-md-6 mb-4">
+                  <label class="form-label font-w600">Button Text</label>
+                  <input type="text" name="button_text" class="form-control solid" value="<%= banner.button_text || '' %>">
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-12 mb-4">
+                  <label class="form-label font-w600">Banner Link</label>
+                  <input type="url" name="link" class="form-control solid" value="<%= banner.link || '' %>">
+                </div>
+              </div>
+
+              <h5 class="mb-3">Display Period</h5>
+
+              <div class="row">
+                <div class="col-md-6 mb-4">
+                  <label class="form-label font-w600">Start Date</label>
+                  <input type="datetime-local" name="start_date" class="form-control solid" 
+                    value="<%= banner.start_date ? new Date(banner.start_date).toISOString().slice(0, 16) : '' %>">
+                </div>
+
+                <div class="col-md-6 mb-4">
+                  <label class="form-label font-w600">End Date</label>
+                  <input type="datetime-local" name="end_date" class="form-control solid"
+                    value="<%= banner.end_date ? new Date(banner.end_date).toISOString().slice(0, 16) : '' %>">
+                </div>
+              </div>
+
+            </form>
+          </div>
+
+          <div class="card-footer text-end">
+            <a href="/admin/banners" class="btn btn-secondary me-2">Cancel</a>
+            <button type="submit" form="bannerForm" class="btn btn-primary">
+              <i class="fas fa-save me-2"></i>Update Banner
+            </button>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<%- include("../layouts/footer") %>

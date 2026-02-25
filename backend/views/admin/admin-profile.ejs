@@ -1,0 +1,133 @@
+<%- include("layouts/header") %>
+  <%- include("layouts/sidebar") %>
+    <div class="content-body">
+      <!-- row -->
+      <div class="container-fluid">
+        <div class="row page-titles">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item active"><a href="javascript:void(0)">Admin</a></li>
+            <li class="breadcrumb-item"><a href="javascript:void(0)">Profile</a></li>
+          </ol>
+        </div>
+
+        <div class="row">
+          <div class="col-lg-12 mt-4">
+            <div class="profile card card-body px-3 pt-3 pb-0">
+              <div class="profile-head">
+                <div class="profile-info">
+                  <div class="profile-photo">
+                    <% if (admin && admin.profile_img) { %>
+                      <img src="/uploads/<%= admin.profile_img %>" width="80" height="80"
+                        class="img-fluid rounded-circle" alt="Profile Image">
+                      <% } else { %>
+                        <img src="/images/profile/profile.png" width="80" height="80" class="img-fluid rounded-circle"
+                          alt="Default Profile">
+                        <% } %>
+                  </div>
+
+                  <div class="profile-details">
+                    <div class="profile-name px-3 pt-2">
+                      <h4 class="text-primary mb-0">
+                        <%= admin.name %>
+                      </h4>
+                      <p>
+                        <%= admin.role %>
+                      </p>
+                    </div>
+                    <div class="profile-email px-2 pt-2">
+                      <h4 class="text-muted mb-0">
+                        <%= admin.email %>
+                      </h4>
+                      <p>Email</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="mt-2">
+            <% if (success && success.length> 0) { %>
+              <div class="alert alert-success alert-dismissible fade show" role="alert">
+                <%= success %>
+                  <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+              </div>
+              <% } %>
+
+                <% if (error && error.length> 0) { %>
+                  <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <%= error %>
+                      <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                  </div>
+                  <% } %>
+          </div>
+
+          <div class="col-xl-12">
+            <div class="card">
+              <div class="card-body">
+                <div class="profile-tab">
+                  <div class="custom-tab-1">
+                    <div class="tab-content">
+                      <div class="pt-3">
+                        <div class="settings-form">
+                          <h4 class="text-primary">Admin Profile</h4>
+                          <form class="mt-3" action="/admin/profile/update" method="POST" enctype="multipart/form-data">
+                            <div class="row">
+                              <div class="mb-3 col-md-6">
+                                <label class="form-label">Name</label>
+                                <input type="text" name="name" placeholder="Name" id="name" class="form-control"
+                                  value="<%= admin.name %>">
+                              </div>
+                              <div class="mb-3 col-md-6">
+                                <label class="form-label">Email</label>
+                                <input type="email" placeholder="Email" name="email" class="form-control"
+                                  value="<%= admin.email %>">
+                              </div>
+                            </div>
+
+                            <div class="row">
+                              <div class="mb-3 col-md-6">
+                                <label class="form-label">Password</label>
+                                <input type="password" placeholder="Password" name="password" class="form-control"
+                                  autocomplete="new-password">
+                              </div>
+
+                              <div class="mb-3 col-md-6">
+                                <label class="form-label">Confirm Password</label>
+                                <input type="password" placeholder="Confirm Password" name="confirm_password"
+                                  class="form-control" autocomplete="new-password">
+                              </div>
+                            </div>
+
+                            <div class="row">
+                              <div class="mb-3 col-md-6">
+                                <label class="form-label">Profile Image</label>
+                                <input type="file" placeholder="Profile Image" name="profile_image"
+                                  class="form-control">
+                              </div>
+                              <div class="mb-3 col-md-6">
+                                <label class="form-label">Role</label>
+                                <input type="text" placeholder="Role" name="role" class="form-control"
+                                  value="<%= admin.role %>" readonly>
+                              </div>
+
+                              <% if (admin.profile_img) { %>
+                                <div class="mb-3 col-md-6">
+                                  <img src="/uploads/<%= admin.profile_img %>" width="80" />
+                                </div>
+                                <% } %>
+                            </div>
+                            <button class="btn btn-primary" type="submit">Sign
+                              in</button>
+                          </form>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <%- include("layouts/footer") %>

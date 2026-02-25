@@ -1,0 +1,123 @@
+<%- include("layouts/header") %>
+<%- include("layouts/sidebar") %>
+
+<div class="content-body">
+  <div class="container-fluid">
+    <div class="d-flex align-items-center mb-4">
+      <h4 class="fs-20 font-w600 mb-0 me-auto">Site Settings</h4>
+    </div>
+
+    <% if (message && message.length > 0) { %>
+      <div class="alert alert-success alert-dismissible fade show">
+        <strong>Success!</strong> <%= message[0] %>
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+      </div>
+    <% } %>
+
+    <div class="row">
+      <div class="col-xl-12">
+        <div class="card">
+          <div class="card-body">
+            <form id="siteSettingForm" action="/admin/site-setting/" method="POST" enctype="multipart/form-data">
+
+              <!-- Site Basic Info -->
+              <div class="row">
+                <div class="col-md-6 mb-4">
+                  <label class="form-label font-w600">Site Name *</label>
+                  <input type="text" name="site_name" class="form-control solid" placeholder="Enter site name" value="<%= siteSettingdata ? siteSettingdata.site_name : '' %>" required>
+                </div>
+
+                <div class="col-md-6 mb-4">
+                  <label class="form-label font-w600">Site Logo</label>
+                  <input type="file" name="site_logo" class="form-control solid" accept="image/*">
+                  <small class="text-muted">PNG, JPG (Max 2MB)</small>
+                  <% if (siteSettingdata && siteSettingdata.site_logo) { %>
+                    <div class="mt-2">
+                      <img src="/uploads/<%= siteSettingdata.site_logo %>" alt="Current Logo" style="max-height: 60px;">
+                    </div>
+                  <% } %>
+                </div>
+              </div>
+
+              <!-- Contact Info -->
+              <div class="row">
+                <div class="col-md-6 mb-4">
+                  <label class="form-label font-w600">Contact Email *</label>
+                  <input type="email" name="site_email" class="form-control solid" placeholder="admin@example.com" value="<%= siteSettingdata ? siteSettingdata.site_email : '' %>" required>
+                </div>
+
+                <div class="col-md-6 mb-4">
+                  <label class="form-label font-w600">Contact Phone</label>
+                  <input type="text" name="site_phone" class="form-control solid" placeholder="+91 9876543210" value="<%= siteSettingdata ? siteSettingdata.site_phone : '' %>">
+                </div>
+              </div>
+
+              <!-- Address -->
+              <div class="row">
+                <div class="col-md-12 mb-4">
+                  <label class="form-label font-w600">Site Address</label>
+                  <textarea name="site_address" rows="3" class="form-control solid" placeholder="Company address"><%= siteSettingdata ? siteSettingdata.site_address : '' %></textarea>
+                </div>
+              </div>
+
+              <!-- Social Links -->
+              <div class="row">
+                <div class="col-md-6 mb-4">
+                  <label class="form-label font-w600">Facebook URL</label>
+                  <input type="url" name="facebook" class="form-control solid" value="<%= siteSettingdata ? siteSettingdata.facebook : '' %>">
+                </div>
+
+                <div class="col-md-6 mb-4">
+                  <label class="form-label font-w600">Instagram URL</label>
+                  <input type="url" name="instagram" class="form-control solid" value="<%= siteSettingdata ? siteSettingdata.instagram : '' %>">
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-6 mb-4">
+                  <label class="form-label font-w600">Twitter (X) URL</label>
+                  <input type="url" name="twitter" class="form-control solid" value="<%= siteSettingdata ? siteSettingdata.twitter : '' %>">
+                </div>
+
+                <div class="col-md-6 mb-4">
+                  <label class="form-label font-w600">YouTube URL</label>
+                  <input type="url" name="youtube" class="form-control solid" value="<%= siteSettingdata ? siteSettingdata.youtube : '' %>">
+                </div>
+              </div>
+
+              <!-- SEO -->
+              <div class="row">
+                <div class="col-md-12 mb-4">
+                  <label class="form-label font-w600">Meta Description</label>
+                  <textarea name="meta_description" rows="3" class="form-control solid" placeholder="SEO meta description"><%= siteSettingdata ? siteSettingdata.meta_description : '' %></textarea>
+                </div>
+              </div>
+
+              <!-- Status -->
+              <div class="row">
+                <div class="col-md-6 mb-4">
+                  <label class="form-label font-w600">Status</label>
+                  <select name="status" class="form-control solid">
+                    <option value="active" <%= siteSettingdata && siteSettingdata.status === 'active' ? 'selected' : '' %>>Active</option>
+                    <option value="inactive" <%= siteSettingdata && siteSettingdata.status === 'inactive' ? 'selected' : '' %>>Inactive</option>
+                  </select>
+                </div>
+              </div>
+
+            </form>
+          </div>
+
+          <div class="card-footer text-end">
+            <a href="/admin/dashboard" class="btn btn-secondary me-2">Cancel</a>
+            <button type="submit" form="siteSettingForm" class="btn btn-primary">
+              <i class="fas fa-save me-2"></i>Save Settings
+            </button>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<%- include("layouts/footer") %>

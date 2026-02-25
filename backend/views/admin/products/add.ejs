@@ -1,0 +1,215 @@
+<%- include("../layouts/header") %>
+<%- include("../layouts/sidebar") %>
+
+<div class="content-body">
+  <div class="container-fluid">
+    <div class="d-flex align-items-center mb-4">
+      <h4 class="fs-20 font-w600 mb-0 me-auto">Add Product</h4>
+      <a href="/admin/products" class="btn btn-secondary btn-sm">
+        <i class="fas fa-arrow-left me-2"></i>Back to Products
+      </a>
+    </div>
+
+    <% if (error && error.length > 0) { %>
+      <div class="alert alert-danger alert-dismissible fade show">
+        <strong>Error!</strong> <%= error[0] %>
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+      </div>
+    <% } %>
+
+    <div class="row">
+      <div class="col-xl-12">
+        <div class="card">
+          <div class="card-body">
+            <form id="productForm" action="/admin/products-add" method="POST" enctype="multipart/form-data">
+              
+              <!-- Basic Info -->
+              <h5 class="mb-3">Basic Information</h5>
+                            <button type="button" id="generateDescBtn" class="btn btn-primary btn-sm mt-2 generateDescBtn">
+                              <i class="fas fa-magic me-2"></i>
+                Generate product data with AI
+              </button>
+
+              <div class="row">
+                <div class="col-md-6 mb-4">
+                  <label class="form-label font-w600">Product Name *</label>
+                  <input type="text" name="name" class="form-control solid" placeholder="Enter product name" required>
+                </div>
+
+                <div class="col-md-6 mb-4">
+                  <label class="form-label font-w600">Product Slug</label>
+                  <input type="text" name="slug" class="form-control solid" placeholder="auto-generated">
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-12 mb-4">
+                  <label class="form-label font-w600">Short Description</label>
+                  <textarea name="short_description" rows="2" class="form-control solid" placeholder="Short product description"></textarea>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-12 mb-4">
+                  <label class="form-label font-w600">Product Description</label>
+                  <textarea name="description" rows="4" class="form-control solid" placeholder="Detailed product description"></textarea>
+                </div>
+              </div>
+
+              <!-- Category Info -->
+              <h5 class="mb-3">Category Information</h5>
+              
+              <div class="row">
+                <div class="col-md-6 mb-4">
+                  <label class="form-label font-w600">Category *</label>
+                  <select name="category_id" id="categorySelect" class="form-control solid" required>
+                    <option value="">Select Category</option>
+                    <% if (categories && categories.length > 0) { %>
+                      <% categories.forEach(category => { %>
+                        <option value="<%= category.id %>"><%= category.name %></option>
+                      <% }) %>
+                    <% } %>
+                  </select>
+                </div>
+
+                <div class="col-md-6 mb-4">
+                  <label class="form-label font-w600">Sub Category</label>
+                  <select name="subcategory_id" id="subcategorySelect" class="form-control solid">
+                    <option value="">Select Sub Category</option>
+                  </select>
+                </div>
+              </div>
+
+              <!-- Price Info -->
+              <h5 class="mb-3">Pricing Information</h5>
+              
+              <div class="row">
+                <div class="col-md-3 mb-4">
+                  <label class="form-label font-w600">Price *</label>
+                  <input type="number" name="price" class="form-control solid" step="0.01" placeholder="0.00" required>
+                </div>
+
+                <div class="col-md-3 mb-4">
+                  <label class="form-label font-w600">Cost Price</label>
+                  <input type="number" name="cost_price" class="form-control solid" step="0.01" placeholder="0.00">
+                </div>
+
+                <div class="col-md-3 mb-4">
+                  <label class="form-label font-w600">Discount</label>
+                  <input type="number" name="discount" class="form-control solid" step="0.01" placeholder="0.00">
+                </div>
+
+                <div class="col-md-3 mb-4">
+                  <label class="form-label font-w600">Discount Type</label>
+                  <select name="discount_type" class="form-control solid">
+                    <option value="fixed">Fixed</option>
+                    <option value="percent">Percent</option>
+                  </select>
+                </div>
+              </div>
+
+              <!-- Inventory -->
+              <h5 class="mb-3">Inventory</h5>
+              
+              <div class="row">
+                <div class="col-md-6 mb-4">
+                  <label class="form-label font-w600">SKU</label>
+                  <input type="text" name="sku" class="form-control solid" placeholder="Stock Keeping Unit">
+                </div>
+
+                <div class="col-md-6 mb-4">
+                  <label class="form-label font-w600">Stock Quantity</label>
+                  <input type="number" name="stock" class="form-control solid" placeholder="0" value="0">
+                </div>
+              </div>
+
+              <!-- Media -->
+              <h5 class="mb-3">Product Image</h5>
+              
+              <div class="row">
+                <div class="col-md-12 mb-4">
+                  <label class="form-label font-w600">Product Image</label>
+                  <input type="file" name="image" class="form-control solid" accept="image/*">
+                </div>
+              </div>
+
+              <!-- Status -->
+              <h5 class="mb-3">Status</h5>
+              
+              <div class="row">
+                <div class="col-md-6 mb-4">
+                  <label class="form-label font-w600">Status *</label>
+                  <select name="status" class="form-control solid" required>
+                    <option value="active" selected>Active</option>
+                    <option value="inactive">Inactive</option>
+                  </select>
+                </div>
+
+                <div class="col-md-6 mb-4">
+                  <label class="form-label font-w600">Featured Product</label>
+                  <div>
+                    <input type="checkbox" name="featured" value="on" class="form-check-input">
+                    <label class="form-check-label">Make this a featured product</label>
+                  </div>
+                </div>
+              </div>
+
+              <!-- SEO -->
+              <h5 class="mb-3">SEO Information</h5>
+              
+              <div class="row">
+                <div class="col-md-12 mb-4">
+                  <label class="form-label font-w600">Meta Title</label>
+                  <input type="text" name="meta_title" class="form-control solid" placeholder="SEO meta title">
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-12 mb-4">
+                  <label class="form-label font-w600">Meta Description</label>
+                  <textarea name="meta_description" rows="3" class="form-control solid" placeholder="SEO meta description"></textarea>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-12 mb-4">
+                  <label class="form-label font-w600">Meta Keywords</label>
+                  <input type="text" name="meta_keywords" class="form-control solid" placeholder="keyword1, keyword2, keyword3">
+                </div>
+              </div>
+
+            </form>
+          </div>
+
+          <div class="card-footer text-end">
+            <a href="/admin/products" class="btn btn-secondary me-2">Cancel</a>
+            <button type="submit" form="productForm" class="btn btn-primary">
+              <i class="fas fa-save me-2"></i>Save Product
+            </button>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+document.getElementById('categorySelect').addEventListener('change', function() {
+  const categoryId = this.value;
+  const subcategorySelect = document.getElementById('subcategorySelect');
+  
+  if (categoryId) {
+    fetch('/admin/get-subcategories/' + categoryId)
+      .then(res => res.json())
+      .then(data => {
+        subcategorySelect.innerHTML = '<option value="">Select Sub Category</option>';
+        data.forEach(subcat => {
+          subcategorySelect.innerHTML += `<option value="${subcat.id}">${subcat.name}</option>`;
+        });
+      });
+  }
+});
+</script>
+
+<%- include("../layouts/footer") %>
