@@ -2,6 +2,10 @@ const express = require("express");
 const router = express.Router();
 const axios = require("axios");
 const AI_URL = process.env.AI_URL;
+const fetch = require("node-fetch");
+
+// controller for chat logic
+const chatController = require("../../controllers/chatController");
 
 // ✅ Slug Generator
 function generateSlug(text) {
@@ -267,50 +271,54 @@ Requirements:
   }
 });
 
-router.post("/chat", async (req, res) => {
-  try {
-    const { message } = req.body;
+// router.post("/chat", async (req, res) => {
+//   try {
+//     const { message } = req.body;
 
-    const systemPrompt = `
-You are an AI assistant for an ecommerce website.
+//     const systemPrompt = `
+//       You are an AI assistant for an ecommerce website.
 
-Your role:
-- Help customers find products
-- Suggest relevant products
-- Answer questions about pricing, offers, discounts
-- Explain shipping and delivery time
-- Help with returns and refunds
-- Be polite, short and professional
-- Always respond like a shopping assistant
+//       Your role:
+//       - Help customers find products
+//       - Suggest relevant products
+//       - Answer questions about pricing, offers, discounts
+//       - Explain shipping and delivery time
+//       - Help with returns and refunds
+//       - Be polite, short and professional
+//       - Always respond like a shopping assistant
 
-If user greets → respond friendly.
-If user asks unrelated question → politely say you assist only with shopping.
-Keep answers short and helpful.
-`;
+//       If user greets → respond friendly.
+//       If user asks unrelated question → politely say you assist only with shopping.
+//       Keep answers short and helpful.
+//       `;
 
-    const response = await fetch("http://localhost:11434/api/generate", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        model: "phi3:mini",
-        prompt: systemPrompt + "\nCustomer: " + message + "\nAssistant:",
-        stream: false,
-      }),
-    });
+//     const response = await fetch("http://localhost:11434/api/generate", {
+//       method: "POST",
+//       headers: { "Content-Type": "application/json" },
+//       body: JSON.stringify({
+//         model: "phi3:mini",
+//         prompt: systemPrompt + "\nCustomer: " + message + "\nAssistant:",
+//         stream: false,
+//       }),
+//     });
 
-    const data = await response.json();
+//     const data = await response.json();
 
-    res.json({
-      success: true,
-      reply: data.response || "No response",
-    });
-  } catch (error) {
-    res.json({
-      success: false,
-      reply: "Server error occurred.",
-    });
-  }
-});
+//     res.json({
+//       success: true,
+//       reply: data.response || "No response",
+//     });
+//   } catch (error) {
+//     res.json({
+//       success: false,
+//       reply: "Server error occurred.",
+//     });
+//   }
+// });
+
+// delegate chat requests to the controller
+
+router.post("/chat", chatController.chat);
 
 router.post("/generate-coupon-code", async (req, res) => {
   try {

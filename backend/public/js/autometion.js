@@ -1,4 +1,4 @@
-//autometion js
+// autometion js
 $(document).ready(function () {
   function generateSlug(text) {
     return text
@@ -118,6 +118,7 @@ $(document).ready(function () {
       },
     });
   });
+
   $(document).on("click", ".generateCouponCode", function () {
     $.ajax({
       url: "/api/ai/generate-coupon-code",
@@ -182,14 +183,14 @@ $(document).ready(function () {
   function showTyping() {
     $(".chatBody").append(
       `<div class="typing-bubble">
-      <img src="/images/dot-dot-typing.gif" alt="Typing..." class="typing"  max-width="100px" max-height="100px"/>
+      <img src="/images/dot-dot-typing.gif" alt="Typing..." class="typing" max-width="100px" max-height="100px"/>
     </div>`,
     );
     scrollToBottom();
   }
 
   function removeTyping() {
-    $(".typing").remove();
+    $(".typing-bubble").remove();
   }
 
   function sendMessage() {
@@ -209,11 +210,11 @@ $(document).ready(function () {
       data: JSON.stringify({ message: message }),
       success: function (response) {
         removeTyping();
-        addBotMessage(response.reply);
+        addBotMessage(response.reply || "I am here. Please try again.");
       },
       error: function () {
         removeTyping();
-        addBotMessage("⚠️ Something went wrong. Try again.");
+        addBotMessage("Something went wrong. Try again.");
       },
       complete: function () {
         $(".sendMessage").prop("disabled", false);
